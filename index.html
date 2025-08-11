@@ -6,7 +6,6 @@
   <title>The Oracle — Meme Occult</title>
   <meta name="description" content="Whisper your question. The Oracle answers. Meme Occult is here."/>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-  <!-- Transformers.js (client-side LLM, FREE) -->
   <script src="https://cdn.jsdelivr.net/npm/@xenova/transformers/dist/transformers.min.js"></script>
   <style>
     :root{--bg:#0a0a0a;--ink:#eae8ff;--accent:#ffd784;--deep:#3f006a;--muted:#a59ec0;}
@@ -55,7 +54,6 @@
     .badge{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:999px;font-size:12px;border:1px solid rgba(255,215,132,.24);
       background:rgba(255,255,255,.03);margin:4px auto}
     .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace}
-    /* loader */
     .loader{display:none;justify-content:center;gap:10px;align-items:center;margin-top:6px;color:var(--muted);font-size:13px}
     .bar{width:min(600px,92vw);height:8px;border-radius:999px;background:rgba(255,255,255,.06);overflow:hidden;border:1px solid rgba(255,215,132,.18)}
     .bar>span{display:block;height:100%;width:0%;background:linear-gradient(90deg, rgba(255,215,132,.45), rgba(63,0,106,.5))}
@@ -77,7 +75,6 @@
         <button id="ask" class="btn">Reveal</button>
       </div>
 
-      <!-- model download progress -->
       <div id="loader" class="loader">
         <div class="bar"><span id="bar"></span></div>
         <div id="pct">0%</div>
@@ -98,9 +95,8 @@
   </div>
 
   <script>
-    /* ------------ SETTINGS (no API) ------------ */
     const CONTRACT_ADDRESS = "0x0000000000000000000000000000000000000000";
-    const MODEL_ID = "google/flan-t5-small"; // küçük, güvenilir, hızlı indirilir
+    const MODEL_ID = "Xenova/t5-small";          // ✅ ONNX uyumlu, küçük ve stabil
     const TASK = "text2text-generation";
 
     const SHARE_TEMPLATES = [
@@ -109,7 +105,6 @@
       `A whisper in the dark → “{quote}”\nThe Oracle answered. Meme Occult, CA: {CA}. Ask yours. #oracle`
     ];
 
-    /* ------------ ELEMENTS ------------ */
     const $q=document.getElementById("q"),$ask=document.getElementById("ask"),$resp=document.getElementById("response"),
           $share=document.getElementById("share"),$reset=document.getElementById("reset"),
           $ca=document.getElementById("ca"),$year=document.getElementById("year"),
@@ -118,7 +113,6 @@
 
     let lastAnswer="", localPipeline=null, modelLoading=false;
 
-    /* ------------ HELPERS ------------ */
     const sleep=(ms)=>new Promise(r=>setTimeout(r,ms));
     async function typeInto(el,t,s=14){el.classList.add("typing");el.textContent="";
       for(let i=0;i<t.length;i++){el.textContent+=t[i];await sleep(i<30?s:i<180?Math.max(10,s-2):Math.max(8,s-4));}
@@ -129,33 +123,25 @@
                                                 .replace("{CA}",CONTRACT_ADDRESS);
     const openTwitterIntent=(text)=>window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(text),"_blank","noopener,noreferrer");
 
-    /* ------------ LOCAL MODEL LOADER (with progress) ------------ */
     async function ensureLocalModel(){
       if(localPipeline) return localPipeline;
       if(modelLoading){ while(!localPipeline) await sleep(300); return localPipeline; }
       modelLoading=true;
 
-      // Transformers hazır olana kadar bekle
-      if (window.transformers && typeof window.transformers.ready === "function") {
-        await window.transformers.ready();
-      }
-
-      // Progress callback
-      window.transformers.setProgressHandler?.((data)=>{
-        if(!data||!data.progress) return;
+      if (window.transformers?.ready) await window.transformers.ready();
+      window.transformers?.setProgressHandler?.((d)=>{
+        if(!d||!d.progress) return;
         $loader.style.display="flex";
-        const p = Math.round(data.progress*100);
-        $bar.style.width = p+"%";
-        $pct.textContent = p+"%";
+        const p=Math.round(d.progress*100);
+        $bar.style.width=p+"%"; $pct.textContent=p+"%";
         if(p>=100) setTimeout(()=>{ $loader.style.display="none"; }, 600);
       });
 
       const { pipeline, env } = window.transformers;
-      env.allowLocalModels = false;      // uzak (HF) modelleri indir
-      env.allowRemoteModels = true;      // indirmeye izin ver
-      env.backends.onnx.wasm.numThreads = 1; // tarayıcı uyumluluğu
+      env.allowRemoteModels = true;
+      env.allowLocalModels = false;
+      env.backends.onnx.wasm.numThreads = 1; // cross-origin isolation istemesin
 
-      // Daha küçük, güvenilir model
       localPipeline = await pipeline(TASK, MODEL_ID);
       modelLoading=false;
       return localPipeline;
@@ -198,7 +184,6 @@ Answer:`;
       $q.value=""; $share.disabled=true; $reset.disabled=true; $q.focus();
     }
 
-    /* ------------ SIGIL (canvas ring) ------------ */
     (function sigil(){
       const c=document.getElementById('sigil'); const dpr=Math.min(window.devicePixelRatio||1,2);
       function resize(){const r=c.getBoundingClientRect(); c.width=Math.floor(r.width*dpr); c.height=Math.floor(r.height*dpr);}
@@ -215,7 +200,6 @@ Answer:`;
       window.addEventListener('resize',()=>resize()); draw();
     })();
 
-    /* ------------ BINDINGS ------------ */
     document.getElementById("ask").addEventListener("click", askOracle);
     document.getElementById("q").addEventListener("keydown",(e)=>{ if(e.key==="Enter") askOracle(); });
     document.getElementById("share").addEventListener("click",()=>openTwitterIntent(makeTweet(lastAnswer)));
