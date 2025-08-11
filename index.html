@@ -1,95 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>The Oracle — Meme Occult</title>
-<meta name="description" content="Today’s Oracle. Mysterious, modern, and made to share."/>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg:#07060a; --ink:#ECE9FF; --muted:#A59FC3;
-    --gold:#F5D481; --vio:#7A35FF; --vio2:#4E1FD6;
-    --glass:rgba(255,255,255,.06); --stroke:rgba(245,212,129,.28);
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%;margin:0;background:radial-gradient(1200px 800px at 50% 8%, #160a23 0%, #0b0a10 55%, #06060a 100%);color:var(--ink);font-family:"Space Grotesk",system-ui,Segoe UI,Roboto,Helvetica,Arial}
-  /* Top Ticker */
-  .ticker{position:fixed;inset:0 0 auto 0;height:44px;z-index:50;border-bottom:1px solid var(--stroke);
-    background:linear-gradient(180deg, rgba(8,8,12,.85), rgba(8,8,12,.55));backdrop-filter:saturate(130%) blur(6px);overflow:hidden}
-  .ticker__inner{display:flex;align-items:center;height:100%;white-space:nowrap}
-  .ticker__track{display:inline-block;padding-left:100%;animation:ticker 22s linear infinite;color:var(--gold);letter-spacing:.02em;font-weight:700}
-  .ticker__track:hover{animation-play-state:paused}
-  @keyframes ticker{to{transform:translateX(-100%)}}
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <meta name="theme-color" content="#0b0a10"/>
+  <title>The Oracle — Meme Occult</title>
+  <meta name="description" content="Today’s Oracle. Mysterious, modern, mobile-first, and made to share."/>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#08070b; --ink:#ECE9FF; --muted:#A59FC3;
+      --gold:#F5D481; --vio:#7A35FF; --vio2:#4E1FD6;
+      --stroke:rgba(245,212,129,.28);
+      --pad: clamp(16px, 3.5vw, 28px);
+      --radius: clamp(14px, 2.5vw, 26px);
+      --shadow: 0 0 160px rgba(122,53,255,.28), inset 0 0 90px rgba(245,212,129,.07);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0}
+    body{
+      background: radial-gradient(1200px 800px at 50% 8%, #160a23 0%, #0b0a10 55%, #06060a 100%);
+      color:var(--ink); font-family:"Space Grotesk",system-ui,Segoe UI,Roboto,Helvetica,Arial;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
 
-  /* Scene */
-  .stage{min-height:100%;display:grid;place-items:center;padding:84px 24px 28px;position:relative;overflow:hidden}
-  .aura,.aura2{position:fixed;inset:-20%;pointer-events:none;mix-blend-mode:screen;filter:blur(3px)}
-  .aura{background:
-    radial-gradient(1200px 800px at 50% 0%, rgba(245,212,129,.14), transparent 60%),
-    radial-gradient(900px 600px at 80% 40%, rgba(122,53,255,.22), transparent 60%),
-    radial-gradient(900px 600px at 20% 80%, rgba(78,31,214,.20), transparent 60%);
-    animation:auraFloat 24s ease-in-out infinite}
-  .aura2{background:
-    radial-gradient(900px 600px at 20% 30%, rgba(122,53,255,.16), transparent 60%),
-    radial-gradient(900px 600px at 80% 70%, rgba(245,212,129,.10), transparent 60%);
-    animation:auraFloat2 30s ease-in-out infinite}
-  @keyframes auraFloat{50%{transform:translateY(-14px)}}
-  @keyframes auraFloat2{50%{transform:translateY(12px)}}
-  .grain{position:fixed;inset:0;pointer-events:none;opacity:.16;mix-blend-mode:soft-light;background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAAApJREFUCNdjYAAAAAIAAeI3LZcAAAAASUVORK5CYII=");image-rendering:pixelated}
+    /* Top Ticker */
+    .ticker{position:fixed; inset:0 0 auto 0; height:44px; z-index:50;
+      border-bottom:1px solid var(--stroke);
+      background:linear-gradient(180deg, rgba(8,8,12,.88), rgba(8,8,12,.56));
+      backdrop-filter:saturate(130%) blur(6px); overflow:hidden}
+    .ticker__inner{display:flex; align-items:center; height:100%; white-space:nowrap}
+    .ticker__track{display:inline-block; padding-left:100%;
+      animation:ticker 20s linear infinite; color:var(--gold); letter-spacing:.02em; font-weight:700}
+    .ticker__track:hover{animation-play-state:paused}
+    @keyframes ticker{to{transform:translateX(-100%)}}
 
-  /* Card */
-  .card{width:min(920px,94vw);background:rgba(10,10,14,.52);border:1px solid var(--stroke);border-radius:26px;
-    box-shadow:0 0 160px rgba(122,53,255,.28), inset 0 0 90px rgba(245,212,129,.07);padding:34px 24px 24px;position:relative;overflow:hidden}
-  .glow{position:absolute;inset:-38%;pointer-events:none;background:
-    radial-gradient(720px 520px at 50% -6%, rgba(245,212,129,.08), transparent 60%),
-    radial-gradient(520px 520px at 110% 30%, rgba(122,53,255,.20), transparent 60%),
-    radial-gradient(520px 520px at -10% 70%, rgba(122,53,255,.18), transparent 60%);filter:blur(10px)}
+    /* Stage */
+    .stage{min-height:100dvh; display:grid; place-items:center;
+      padding: calc(44px + var(--pad)) var(--pad) var(--pad); position:relative; overflow:hidden}
+    .aura,.aura2{position:fixed; inset:-25%; pointer-events:none; mix-blend-mode:screen; filter:blur(3px)}
+    .aura{
+      background:
+        radial-gradient(1200px 800px at 50% 0%, rgba(245,212,129,.14), transparent 60%),
+        radial-gradient(900px 600px at 80% 40%, rgba(122,53,255,.22), transparent 60%),
+        radial-gradient(900px 600px at 20% 80%, rgba(78,31,214,.20), transparent 60%);
+      animation:auraFloat 24s ease-in-out infinite}
+    .aura2{
+      background:
+        radial-gradient(900px 600px at 20% 30%, rgba(122,53,255,.16), transparent 60%),
+        radial-gradient(900px 600px at 80% 70%, rgba(245,212,129,.10), transparent 60%);
+      animation:auraFloat2 30s ease-in-out infinite}
+    @keyframes auraFloat{50%{transform:translateY(-14px)}} @keyframes auraFloat2{50%{transform:translateY(12px)}}
+    .grain{position:fixed; inset:0; pointer-events:none; opacity:.16; mix-blend-mode:soft-light;
+      background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAAApJREFUCNdjYAAAAAIAAeI3LZcAAAAASUVORK5CYII=");
+      image-rendering:pixelated}
 
-  h1{font-family:"Cinzel Decorative",serif;letter-spacing:.08em;text-align:center;font-size:clamp(30px,4.8vw,56px);
-    margin:2px 0 8px;color:var(--gold);text-shadow:0 2px 30px rgba(245,212,129,.35),0 0 1px rgba(255,255,255,.35)}
-  .sub{text-align:center;color:var(--muted);margin:2px 0 18px}
+    /* Card */
+    .card{
+      width:min(960px, 98vw); background:rgba(10,10,14,.52);
+      border:1px solid var(--stroke); border-radius:var(--radius);
+      box-shadow: var(--shadow); padding: clamp(20px, 2.5vw, 34px) clamp(16px, 2.2vw, 24px) var(--pad);
+      position:relative; overflow:hidden
+    }
+    .glow{position:absolute; inset:-38%; pointer-events:none;
+      background:
+        radial-gradient(720px 520px at 50% -6%, rgba(245,212,129,.08), transparent 60%),
+        radial-gradient(520px 520px at 110% 30%, rgba(122,53,255,.20), transparent 60%),
+        radial-gradient(520px 520px at -10% 70%, rgba(122,53,255,.18), transparent 60%);
+      filter:blur(10px)}
 
-  /* Sigil */
-  .sigil{display:grid;place-items:center;margin:10px 0 12px}
-  canvas#sigil{width:min(220px,36vw);height:min(220px,36vw)}
+    h1{
+      font-family:"Cinzel Decorative",serif; letter-spacing:.08em; text-align:center;
+      font-size: clamp(28px, 6vw, 56px); margin: 4px 0 8px; color:var(--gold);
+      text-shadow:0 2px 30px rgba(245,212,129,.35),0 0 1px rgba(255,255,255,.35)
+    }
+    .sub{ text-align:center; color:var(--muted); margin: 2px 0 clamp(10px,2vw,18px); font-size: clamp(14px, 2.8vw, 16px) }
 
-  /* Buttons */
-  .actions{display:flex;gap:12px;justify-content:center;margin:14px 0 10px;flex-wrap:wrap}
-  .btn{--h:14px; padding:14px 18px;border-radius:14px;border:1px solid rgba(245,212,129,.46);
-    background:
-      linear-gradient(180deg, rgba(245,212,129,.24), rgba(245,212,129,.08)),
-      radial-gradient(120% 180% at 0% 0%, rgba(122,53,255,.18), transparent);
-    color:var(--gold);font-weight:800;letter-spacing:.03em;cursor:pointer;
-    box-shadow:0 10px 28px rgba(245,212,129,.18), 0 0 0 1px rgba(255,255,255,.04) inset;
-    transition:transform .08s ease, box-shadow .2s ease, filter .2s ease}
-  .btn:hover{transform:translateY(-1px) scale(1.012); box-shadow:0 16px 36px rgba(245,212,129,.26)}
-  .btn:active{transform:translateY(0)}
-  .btn.sec{border-color:rgba(122,53,255,.55);
-    background:
-      linear-gradient(180deg, rgba(122,53,255,.30), rgba(122,53,255,.12)),
-      radial-gradient(120% 180% at 0% 0%, rgba(245,212,129,.16), transparent);
-    color:#E9DEFF; box-shadow:0 10px 28px rgba(122,53,255,.22), 0 0 0 1px rgba(255,255,255,.04) inset}
+    /* Sigil */
+    .sigil{display:grid; place-items:center; margin:10px 0 12px}
+    canvas#sigil{ width:min(260px, 60vw); height:min(260px, 60vw) }
 
-  /* Oracle text */
-  .oracle{margin:18px auto 10px;max-width:min(760px,92vw);padding:22px 18px;border-radius:16px;border:1px solid rgba(245,212,129,.30);
-    background:rgba(255,255,255,.04);backdrop-filter:saturate(120%) blur(6px);
-    box-shadow:inset 0 0 60px rgba(245,212,129,.06);line-height:1.7;font-size:18px;min-height:116px}
-  .typing{border-right:2px solid var(--gold);white-space:pre-wrap;word-break:break-word}
+    /* Buttons */
+    .actions{ display:flex; gap: clamp(8px,2vw,12px); justify-content:center; margin:14px 0 10px; flex-wrap:wrap }
+    .btn{
+      min-height:48px; padding: 12px clamp(14px,3.2vw,18px);
+      border-radius: clamp(12px, 2vw, 14px);
+      border:1px solid rgba(245,212,129,.46);
+      background:
+        linear-gradient(180deg, rgba(245,212,129,.24), rgba(245,212,129,.08)),
+        radial-gradient(120% 180% at 0% 0%, rgba(122,53,255,.18), transparent);
+      color:var(--gold); font-weight:800; letter-spacing:.03em; cursor:pointer;
+      box-shadow:0 10px 28px rgba(245,212,129,.18), 0 0 0 1px rgba(255,255,255,.04) inset;
+      transition: transform .08s ease, box-shadow .2s ease, filter .2s ease;
+      touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    }
+    .btn:hover{ transform:translateY(-1px) scale(1.012); box-shadow:0 16px 36px rgba(245,212,129,.26) }
+    .btn:active{ transform: translateY(0) }
+    .btn.sec{
+      border-color:rgba(122,53,255,.55);
+      background:
+        linear-gradient(180deg, rgba(122,53,255,.30), rgba(122,53,255,.12)),
+        radial-gradient(120% 180% at 0% 0%, rgba(245,212,129,.16), transparent);
+      color:#E9DEFF; box-shadow:0 10px 28px rgba(122,53,255,.22), 0 0 0 1px rgba(255,255,255,.04) inset;
+    }
+    @media (max-width: 420px){
+      .actions{flex-direction:column}
+      .btn{width:100%}
+    }
 
-  /* Footer */
-  .foot{text-align:center;margin-top:12px;color:#cfc8e8;font-size:13px;opacity:.9}
-  .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid var(--stroke);
-    background:rgba(255,255,255,.04);font-size:13px;margin:6px auto}
-  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    /* Oracle text */
+    .oracle{
+      margin: clamp(12px, 2.5vw, 18px) auto 10px;
+      max-width: min(800px, 96vw);
+      padding: clamp(14px, 2.6vw, 22px) clamp(12px, 2.4vw, 18px);
+      border-radius: clamp(12px, 2.2vw, 16px);
+      border:1px solid rgba(245,212,129,.30);
+      background: rgba(255,255,255,.04);
+      backdrop-filter: saturate(120%) blur(6px);
+      box-shadow: inset 0 0 60px rgba(245,212,129,.06);
+      line-height: 1.7; font-size: clamp(15px, 3.5vw, 18px); min-height: 116px;
+    }
+    .typing{ border-right:2px solid var(--gold); white-space:pre-wrap; word-break:break-word }
 
-  /* Fixed X link */
-  .x-fab{position:fixed;right:16px;bottom:16px;z-index:60;padding:10px 14px;border-radius:999px;
-    background:linear-gradient(180deg, rgba(122,53,255,.28), rgba(122,53,255,.12));
-    border:1px solid rgba(122,53,255,.55);color:#EDEBFF;text-decoration:none;font-weight:800;letter-spacing:.02em;
-    box-shadow:0 10px 28px rgba(122,53,255,.24), inset 0 0 0 1px rgba(255,255,255,.05)}
-  .x-fab:hover{transform:translateY(-1px); box-shadow:0 16px 36px rgba(122,53,255,.30)}
-</style>
+    /* Footer */
+    .foot{ text-align:center; margin-top:12px; color:#cfc8e8; font-size: clamp(12px, 2.8vw, 13px); opacity:.9 }
+    .chip{ display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px; border-radius:999px; border:1px solid var(--stroke);
+      background:rgba(255,255,255,.04); font-size: clamp(12px, 2.8vw, 13px); margin:6px auto }
+    .mono{ font-family: ui-monospace,SFMono-Regular,Menlo,Consolas,monospace }
+
+    /* Fixed X link */
+    .x-fab{
+      position:fixed; right: clamp(10px, 3vw, 16px); bottom: calc(16px + env(safe-area-inset-bottom));
+      z-index:60; padding:10px 14px; border-radius:999px; text-decoration:none;
+      background:linear-gradient(180deg, rgba(122,53,255,.28), rgba(122,53,255,.12));
+      border:1px solid rgba(122,53,255,.55); color:#EDEBFF; font-weight:800; letter-spacing:.02em;
+      box-shadow:0 10px 28px rgba(122,53,255,.24), inset 0 0 0 1px rgba(255,255,255,.05)
+    }
+    .x-fab:hover{ transform:translateY(-1px); box-shadow:0 16px 36px rgba(122,53,255,.30) }
+    @media (max-width:420px){ .x-fab{ padding:10px 12px; font-size:14px } }
+
+    /* Motion-reduction */
+    @media (prefers-reduced-motion: reduce){
+      .ticker__track, .aura, .aura2 { animation: none !important }
+    }
+  </style>
 </head>
 <body>
   <!-- Ticker -->
@@ -102,146 +158,149 @@
     </div>
   </div>
 
-  <div class="stage" id="stage">
+  <main class="stage" id="stage">
     <div class="aura"></div><div class="aura2"></div><div class="grain"></div>
 
-    <div class="card">
+    <section class="card" aria-labelledby="title">
       <div class="glow"></div>
 
-      <h1>The Oracle</h1>
-      <div class="sub">Today’s prophecy has arrived. No questions — only fate.</div>
+      <h1 id="title">The Oracle</h1>
+      <p class="sub">Today’s prophecy has arrived. No questions — only fate.</p>
 
-      <div class="sigil"><canvas id="sigil"></canvas></div>
-
-      <div class="actions">
-        <button id="reveal" class="btn">Reveal today’s Oracle</button>
-      </div>
-
-      <div id="prophecy" class="oracle typing">Awaiting the veil to thin…</div>
+      <div class="sigil"><canvas id="sigil" aria-hidden="true"></canvas></div>
 
       <div class="actions">
-        <button id="share" class="btn sec">Share on X</button>
-        <button id="copy"  class="btn">Copy text</button>
+        <button id="reveal" class="btn" aria-label="Reveal today's Oracle">Reveal today’s Oracle</button>
       </div>
 
-      <div class="foot">
-        <div class="chip"><span>Meme Occult</span><span class="mono" id="ca">CA: 0x0000000000000000000000000000000000000000</span></div>
+      <div id="prophecy" class="oracle typing" role="status" aria-live="polite">Awaiting the veil to thin…</div>
+
+      <div class="actions">
+        <button id="share" class="btn sec" aria-label="Share on X (Twitter)">Share on X</button>
+        <button id="copy"  class="btn" aria-label="Copy Oracle text">Copy text</button>
+      </div>
+
+      <footer class="foot">
+        <div class="chip">
+          <span>Meme Occult</span>
+          <span class="mono" id="ca">CA: 0x0000000000000000000000000000000000000000</span>
+        </div>
         <div>© <span id="year"></span> Meme Occult • The veil is thin.</div>
-      </div>
-    </div>
-  </div>
+      </footer>
+    </section>
+  </main>
 
   <a class="x-fab" href="https://x.com/oracle_memee" target="_blank" rel="noopener noreferrer">X / @oracle_memee</a>
 
-<script>
-  /* ---------- CONFIG ---------- */
-  const CONTRACT_ADDRESS = "0x0000000000000000000000000000000000000000";
-  const TAG = "#oracle";
+  <script>
+    /* ---------- CONFIG ---------- */
+    const CONTRACT_ADDRESS = "0x0000000000000000000000000000000000000000";
+    const TAG = "#oracle";
 
-  /* ---------- ELEMENTS ---------- */
-  const $prophecy = document.getElementById("prophecy");
-  const $reveal   = document.getElementById("reveal");
-  const $share    = document.getElementById("share");
-  const $copy     = document.getElementById("copy");
-  const $ca       = document.getElementById("ca");
-  const $year     = document.getElementById("year");
-  $year.textContent = new Date().getFullYear();
-  $ca.textContent   = `CA: ${CONTRACT_ADDRESS}`;
+    /* ---------- ELEMENTS ---------- */
+    const $prophecy = document.getElementById("prophecy");
+    const $reveal   = document.getElementById("reveal");
+    const $share    = document.getElementById("share");
+    const $copy     = document.getElementById("copy");
+    const $ca       = document.getElementById("ca");
+    const $year     = document.getElementById("year");
+    $year.textContent = new Date().getFullYear();
+    $ca.textContent   = `CA: ${CONTRACT_ADDRESS}`;
 
-  /* ---------- UTIL ---------- */
-  const sleep = ms => new Promise(r=>setTimeout(r,ms));
-  async function typeInto(el, text, speed=14){
-    el.classList.add("typing"); el.textContent="";
-    for(let i=0;i<text.length;i++){
-      el.textContent+=text[i];
-      await sleep(i<40?speed:i<220?Math.max(10,speed-2):Math.max(8,speed-4));
-    } el.classList.remove("typing");
-  }
-  function firstSentence(s){ if(!s) return ""; const cut = s.split(/(?<=[.!?])\s/)[0]||s; return cut.trim().slice(0,140); }
-  function openX(text){ const url="https://twitter.com/intent/tweet?text="+encodeURIComponent(text); window.open(url,"_blank","noopener,noreferrer"); }
-
-  /* ---------- DAILY SEEDED ORACLE (no API) ---------- */
-  function dailySeed(){
-    const d=new Date(), key=`${d.getUTCFullYear()}-${d.getUTCMonth()+1}-${d.getUTCDate()}`;
-    let h=2166136261>>>0; for(let i=0;i<key.length;i++){ h^=key.charCodeAt(i); h=Math.imul(h,16777619); } return h>>>0;
-  }
-  function mulberry32(a){ return function(){ let t=a+=0x6D2B79F5; t=Math.imul(t^t>>>15,t|1); t^=t+Math.imul(t^t>>>7,t|61); return ((t^t>>>14)>>>0)/4294967296; } }
-  const rng = mulberry32(dailySeed());
-  const pick = arr => arr[Math.floor(rng()*arr.length)];
-
-  const L1 = [
-    "A thin seam of light cuts the dark, and what hides steps forward.",
-    "Between noise and silence, a pattern leans your way.",
-    "When the crowd looks left, a quiet door opens to the right.",
-    "Your signal is heard by unseen hands; alignment gathers.",
-    "Patience hardens into edge; timing sharpens like glass."
-  ];
-  const L2 = [
-    "Trade fear for focus; you will win by the rhythm, not the roar.",
-    "If you discard haste, compounding will choose you.",
-    "Guard the spark; it becomes a lamp for those who arrive late.",
-    "The map is wrong, but the compass is true—trust the bearing.",
-    "You are earlier than you think; act small, repeat, persist."
-  ];
-  const L3 = [
-    "Omen: a slow flame, then a quick turn.",
-    "Omen: a key appears where you stopped knocking.",
-    "Omen: the quiet name becomes the loud one.",
-    "Omen: momentum after hesitation.",
-    "Omen: from drift to direction."
-  ];
-  function composeOracle(){ return `${pick(L1)}\n\n${pick(L2)}\n\n${pick(L3)}`; }
-
-  let todaysOracle = "";
-  function tweetText(){
-    const quote = firstSentence(todaysOracle).replace(/\s+/g," ");
-    return `Today's Oracle: “${quote}”\nMeme Occult is here. CA: ${CONTRACT_ADDRESS}\n${TAG}`;
-  }
-
-  /* ---------- ACTIONS ---------- */
-  async function reveal(){ todaysOracle = composeOracle(); await typeInto($prophecy, todaysOracle, 12); }
-  function shareX(){ if(!todaysOracle) reveal().then(()=>openX(tweetText())); else openX(tweetText()); }
-  async function copyText(){
-    try{
-      const t = `The Oracle answered:\n\n${todaysOracle}\n\nMeme Occult • CA: ${CONTRACT_ADDRESS}\n${TAG}`;
-      await navigator.clipboard.writeText(t);
-      const prev = $copy.textContent; $copy.textContent="Copied"; setTimeout(()=>{ $copy.textContent=prev; }, 1200);
-    }catch(e){ console.error(e); }
-  }
-
-  $reveal.addEventListener("click", reveal);
-  $share .addEventListener("click", shareX);
-  $copy  .addEventListener("click", copyText);
-  window.addEventListener("load", ()=>{ reveal(); });
-
-  /* ---------- Sigil ---------- */
-  (function sigil(){
-    const c=document.getElementById('sigil'); const dpr=Math.min(window.devicePixelRatio||1,2);
-    function resize(){ const r=c.getBoundingClientRect(); c.width=Math.floor(r.width*dpr); c.height=Math.floor(r.height*dpr); }
-    const ctx=c.getContext('2d'); let t=0; resize();
-    function draw(){
-      const w=c.width,h=c.height,cx=w/2,cy=h/2,R=Math.min(w,h)*0.36;
-      ctx.clearRect(0,0,w,h);
-      const g=ctx.createRadialGradient(cx,cy,0,cx,cy,R*1.25);
-      g.addColorStop(0,"rgba(245,212,129,.22)"); g.addColorStop(1,"rgba(122,53,255,0)");
-      ctx.fillStyle=g; ctx.beginPath(); ctx.arc(cx,cy,R*1.25,0,Math.PI*2); ctx.fill();
-
-      const N=62;
-      for(let i=0;i<N;i++){
-        const a=(i/N)*Math.PI*2 + t*0.003*(i%2?1:-1);
-        const r=R + Math.sin(t*0.02 + i)*2.0;
-        const x=cx+Math.cos(a)*r, y=cy+Math.sin(a)*r;
-        const s=1.1+0.95*Math.sin(t*0.035 + i);
-        ctx.fillStyle="rgba(245,212,129,.80)";
-        ctx.beginPath(); ctx.arc(x,y,s,0,Math.PI*2); ctx.fill();
-      }
-      ctx.strokeStyle="rgba(245,212,129,.62)"; ctx.lineWidth=1.2*dpr; ctx.beginPath();
-      for(let k=0;k<5;k++){const a=t*0.01 + k*(Math.PI*2/5), x=cx+Math.cos(a)*R*0.54, y=cy+Math.sin(a)*R*0.54; if(k===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);}
-      ctx.closePath(); ctx.stroke();
-      t++; requestAnimationFrame(draw);
+    /* ---------- UTIL ---------- */
+    const sleep = ms => new Promise(r=>setTimeout(r,ms));
+    async function typeInto(el, text, speed=14){
+      el.classList.add("typing"); el.textContent="";
+      for(let i=0;i<text.length;i++){
+        el.textContent+=text[i];
+        await sleep(i<40?speed:i<220?Math.max(10,speed-2):Math.max(8,speed-4));
+      } el.classList.remove("typing");
     }
-    window.addEventListener('resize', resize); draw();
-  })();
-</script>
+    function firstSentence(s){ if(!s) return ""; const cut = s.split(/(?<=[.!?])\s/)[0]||s; return cut.trim().slice(0,140); }
+    function openX(text){ const url="https://twitter.com/intent/tweet?text="+encodeURIComponent(text); window.open(url,"_blank","noopener,noreferrer"); }
+
+    /* ---------- DAILY SEEDED ORACLE (no API) ---------- */
+    function dailySeed(){
+      const d=new Date(), key=`${d.getUTCFullYear()}-${d.getUTCMonth()+1}-${d.getUTCDate()}`;
+      let h=2166136261>>>0; for(let i=0;i<key.length;i++){ h^=key.charCodeAt(i); h=Math.imul(h,16777619); } return h>>>0;
+    }
+    function mulberry32(a){return function(){let t=a+=0x6D2B79F5; t=Math.imul(t^t>>>15,t|1); t^=t+Math.imul(t^t>>>7,t|61); return ((t^t>>>14)>>>0)/4294967296;}}
+    const rng = mulberry32(dailySeed());
+    const pick = arr => arr[Math.floor(rng()*arr.length)];
+
+    const L1 = [
+      "A thin seam of light cuts the dark, and what hides steps forward.",
+      "Between noise and silence, a pattern leans your way.",
+      "When the crowd looks left, a quiet door opens to the right.",
+      "Your signal is heard by unseen hands; alignment gathers.",
+      "Patience hardens into edge; timing sharpens like glass."
+    ];
+    const L2 = [
+      "Trade fear for focus; you will win by the rhythm, not the roar.",
+      "If you discard haste, compounding will choose you.",
+      "Guard the spark; it becomes a lamp for those who arrive late.",
+      "The map is wrong, but the compass is true—trust the bearing.",
+      "You are earlier than you think; act small, repeat, persist."
+    ];
+    const L3 = [
+      "Omen: a slow flame, then a quick turn.",
+      "Omen: a key appears where you stopped knocking.",
+      "Omen: the quiet name becomes the loud one.",
+      "Omen: momentum after hesitation.",
+      "Omen: from drift to direction."
+    ];
+    function composeOracle(){ return `${pick(L1)}\n\n${pick(L2)}\n\n${pick(L3)}`; }
+
+    let todaysOracle = "";
+    function tweetText(){
+      const quote = firstSentence(todaysOracle).replace(/\s+/g," ");
+      return `Today's Oracle: “${quote}”\nMeme Occult is here. CA: ${CONTRACT_ADDRESS}\n${TAG}`;
+    }
+
+    /* ---------- ACTIONS ---------- */
+    async function reveal(){ todaysOracle = composeOracle(); await typeInto($prophecy, todaysOracle, 12); }
+    function shareX(){ if(!todaysOracle) reveal().then(()=>openX(tweetText())); else openX(tweetText()); }
+    async function copyText(){
+      try{
+        const t = `The Oracle answered:\n\n${todaysOracle}\n\nMeme Occult • CA: ${CONTRACT_ADDRESS}\n${TAG}`;
+        await navigator.clipboard.writeText(t);
+        const prev = $copy.textContent; $copy.textContent="Copied"; setTimeout(()=>{ $copy.textContent=prev; }, 1200);
+      }catch(e){ console.error(e); }
+    }
+
+    $reveal.addEventListener("click", reveal, {passive:true});
+    $share .addEventListener("click", shareX, {passive:true});
+    $copy  .addEventListener("click", copyText, {passive:true});
+    window.addEventListener("load", ()=>{ reveal(); });
+
+    /* ---------- Sigil ---------- */
+    (function sigil(){
+      const c=document.getElementById('sigil'); const dpr=Math.min(window.devicePixelRatio||1,2);
+      function resize(){ const r=c.getBoundingClientRect(); c.width=Math.floor(r.width*dpr); c.height=Math.floor(r.height*dpr); }
+      const ctx=c.getContext('2d'); let t=0; resize();
+      function draw(){
+        const w=c.width,h=c.height,cx=w/2,cy=h/2,R=Math.min(w,h)*0.36;
+        ctx.clearRect(0,0,w,h);
+        const g=ctx.createRadialGradient(cx,cy,0,cx,cy,R*1.25);
+        g.addColorStop(0,"rgba(245,212,129,.22)"); g.addColorStop(1,"rgba(122,53,255,0)");
+        ctx.fillStyle=g; ctx.beginPath(); ctx.arc(cx,cy,R*1.25,0,Math.PI*2); ctx.fill();
+        const N=62;
+        for(let i=0;i<N;i++){
+          const a=(i/N)*Math.PI*2 + t*0.003*(i%2?1:-1);
+          const r=R + Math.sin(t*0.02 + i)*2.0;
+          const x=cx+Math.cos(a)*r, y=cy+Math.sin(a)*r;
+          const s=1.1+0.95*Math.sin(t*0.035 + i);
+          ctx.fillStyle="rgba(245,212,129,.80)";
+          ctx.beginPath(); ctx.arc(x,y,s,0,Math.PI*2); ctx.fill();
+        }
+        ctx.strokeStyle="rgba(245,212,129,.62)"; ctx.lineWidth=1.2*dpr; ctx.beginPath();
+        for(let k=0;k<5;k++){const a=t*0.01 + k*(Math.PI*2/5), x=cx+Math.cos(a)*R*0.54, y=cy+Math.sin(a)*R*0.54;
+          if(k===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);}
+        ctx.closePath(); ctx.stroke();
+        t++; requestAnimationFrame(draw);
+      }
+      window.addEventListener('resize', resize, {passive:true}); draw();
+    })();
+  </script>
 </body>
 </html>
