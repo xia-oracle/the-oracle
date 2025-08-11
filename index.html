@@ -9,93 +9,61 @@
   <!-- Transformers.js (client-side LLM, FREE) -->
   <script src="https://cdn.jsdelivr.net/npm/@xenova/transformers/dist/transformers.min.js"></script>
   <style>
-    :root{
-      --bg:#0a0a0a; --ink:#eae8ff; --accent:#ffd784; --deep:#3f006a; --muted:#a59ec0;
-    }
+    :root{--bg:#0a0a0a;--ink:#eae8ff;--accent:#ffd784;--deep:#3f006a;--muted:#a59ec0;}
     *{box-sizing:border-box}
     html,body{height:100%;margin:0;background:#07070a;color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
     .wrap{min-height:100%;display:grid;place-items:center;padding:24px;position:relative;overflow:hidden}
-    /* premium aura + gradients */
     .aura{position:fixed;inset:-10%;pointer-events:none;mix-blend-mode:screen;
-      background:
-        radial-gradient(1200px 800px at 50% 10%, rgba(255,215,132,.10), transparent 60%),
-        radial-gradient(900px 600px at 18% 78%, rgba(63,0,106,.25), transparent 60%),
-        radial-gradient(900px 600px at 82% 40%, rgba(63,0,106,.22), transparent 60%);
-      filter:blur(2px);
-    }
-    /* fine grain */
+      background:radial-gradient(1200px 800px at 50% 10%, rgba(255,215,132,.10), transparent 60%),
+                 radial-gradient(900px 600px at 18% 78%, rgba(63,0,106,.25), transparent 60%),
+                 radial-gradient(900px 600px at 82% 40%, rgba(63,0,106,.22), transparent 60%);
+      filter:blur(2px)}
     .grain{position:fixed;inset:0;pointer-events:none;opacity:.22;mix-blend-mode:soft-light;
       background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAAApJREFUCNdjYAAAAAIAAeI3LZcAAAAASUVORK5CYII=");
-      image-rendering:pixelated;
-    }
-
-    .card{
-      width:min(860px,92vw);
-      background:rgba(10,10,12,.55);
-      border:1px solid rgba(255,215,132,.28);
-      border-radius:20px;
-      box-shadow:0 0 120px rgba(63,0,106,.28), inset 0 0 80px rgba(255,215,132,.05);
-      padding:28px 22px 22px;
-      position:relative; overflow:hidden;
-    }
-    .glow{
-      position:absolute;inset:-40%;
-      background:
-        radial-gradient(720px 520px at 50% -6%, rgba(255,215,132,.06), transparent 60%),
-        radial-gradient(520px 520px at 110% 30%, rgba(63,0,106,.18), transparent 60%),
-        radial-gradient(520px 520px at -10% 70%, rgba(63,0,106,.18), transparent 60%);
-      filter:blur(12px);pointer-events:none;animation:float 18s ease-in-out infinite;
-    }
+      image-rendering:pixelated}
+    .card{width:min(860px,92vw);background:rgba(10,10,12,.55);border:1px solid rgba(255,215,132,.28);
+      border-radius:20px;box-shadow:0 0 120px rgba(63,0,106,.28), inset 0 0 80px rgba(255,215,132,.05);
+      padding:28px 22px 22px;position:relative;overflow:hidden}
+    .glow{position:absolute;inset:-40%;
+      background:radial-gradient(720px 520px at 50% -6%, rgba(255,215,132,.06), transparent 60%),
+                 radial-gradient(520px 520px at 110% 30%, rgba(63,0,106,.18), transparent 60%),
+                 radial-gradient(520px 520px at -10% 70%, rgba(63,0,106,.18), transparent 60%);
+      filter:blur(12px);pointer-events:none;animation:float 18s ease-in-out infinite}
     @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
-
-    h1{
-      font-family:"Cinzel Decorative",serif;
-      letter-spacing:.08em;text-align:center;
+    h1{font-family:"Cinzel Decorative",serif;letter-spacing:.08em;text-align:center;
       font-size:clamp(28px,4vw,46px);margin:6px 0 8px;color:var(--accent);
-      text-shadow:0 2px 30px rgba(255,215,132,.35),0 0 1px rgba(255,255,255,.35);
-    }
-    .sub{color:var(--muted);text-align:center;margin-bottom:18px}
-
+      text-shadow:0 2px 30px rgba(255,215,132,.35),0 0 1px rgba(255,255,255,.35)}
+    .sub{color:var(--muted);text-align:center;margin-bottom:14px}
     .sigil-wrap{display:grid;place-items:center;margin:6px 0 4px}
     canvas#sigil{width:min(180px,32vw);height:min(180px,32vw)}
-
     .inputRow{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;margin:14px 0 10px}
-    input[type="text"]{
-      width:min(600px,92vw);padding:14px 16px;border-radius:12px;
-      border:1px solid rgba(255,215,132,.22);
-      background:rgba(255,255,255,.03);color:var(--ink);outline:none;font-size:16px;
-      transition:border-color .2s,box-shadow .2s;
-    }
+    input[type="text"]{width:min(600px,92vw);padding:14px 16px;border-radius:12px;border:1px solid rgba(255,215,132,.22);
+      background:rgba(255,255,255,.03);color:var(--ink);outline:none;font-size:16px;transition:border-color .2s,box-shadow .2s}
     input[type="text"]:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(255,215,132,.12)}
-    .btn{
-      padding:12px 18px;border-radius:12px;border:1px solid rgba(255,215,132,.45);
+    .btn{padding:12px 18px;border-radius:12px;border:1px solid rgba(255,215,132,.45);
       background:linear-gradient(180deg, rgba(255,215,132,.22), rgba(255,215,132,.06));
-      color:var(--accent);font-weight:600;cursor:pointer;letter-spacing:.02em;
-      transition:transform .08s ease, box-shadow .2s ease, border-color .2s ease;
-      box-shadow:0 6px 24px rgba(255,215,132,.16), inset 0 0 0 1px rgba(255,255,255,.04);
-    }
+      color:var(--accent);font-weight:600;cursor:pointer;letter-spacing:.02em;transition:transform .08s, box-shadow .2s, border-color .2s;
+      box-shadow:0 6px 24px rgba(255,215,132,.16), inset 0 0 0 1px rgba(255,255,255,.04)}
     .btn:hover{transform:translateY(-1px) scale(1.01);box-shadow:0 10px 28px rgba(255,215,132,.22)}
     .btn:disabled{opacity:.6;cursor:not-allowed;transform:none;box-shadow:none}
-
-    .resp{
-      margin:16px auto 8px;max-width:min(720px,92vw);
-      padding:18px 16px;border-radius:14px;border:1px solid rgba(255,215,132,.28);
+    .resp{margin:16px auto 8px;max-width:min(720px,92vw);padding:18px 16px;border-radius:14px;border:1px solid rgba(255,215,132,.28);
       background:rgba(255,255,255,.03);min-height:82px;line-height:1.65;letter-spacing:.01em;font-size:17px;
-      backdrop-filter:saturate(120%) blur(4px);
-      box-shadow:inset 0 0 60px rgba(255,215,132,.04);
-    }
-    .fade{opacity:.75}
-    .typing{border-right:2px solid var(--accent);white-space:pre-wrap;word-break:break-word}
+      backdrop-filter:saturate(120%) blur(4px);box-shadow:inset 0 0 60px rgba(255,215,132,.04)}
+    .fade{opacity:.75}.typing{border-right:2px solid var(--accent);white-space:pre-wrap;word-break:break-word}
     .rowEnd{display:flex;gap:10px;justify-content:center;margin-top:8px;flex-wrap:wrap}
     .foot{text-align:center;margin-top:10px;color:#c9c3df;font-size:13px;opacity:.85}
-    .badge{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:999px;font-size:12px;border:1px solid rgba(255,215,132,.24);background:rgba(255,255,255,.03);margin:4px auto}
+    .badge{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:999px;font-size:12px;border:1px solid rgba(255,215,132,.24);
+      background:rgba(255,255,255,.03);margin:4px auto}
     .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace}
+    /* loader */
+    .loader{display:none;justify-content:center;gap:10px;align-items:center;margin-top:6px;color:var(--muted);font-size:13px}
+    .bar{width:min(600px,92vw);height:8px;border-radius:999px;background:rgba(255,255,255,.06);overflow:hidden;border:1px solid rgba(255,215,132,.18)}
+    .bar>span{display:block;height:100%;width:0%;background:linear-gradient(90deg, rgba(255,215,132,.45), rgba(63,0,106,.5))}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="aura"></div>
-    <div class="grain"></div>
+    <div class="aura"></div><div class="grain"></div>
 
     <div class="card">
       <div class="glow"></div>
@@ -109,6 +77,12 @@
         <button id="ask" class="btn">Reveal</button>
       </div>
 
+      <!-- model download progress -->
+      <div id="loader" class="loader">
+        <div class="bar"><span id="bar"></span></div>
+        <div id="pct">0%</div>
+      </div>
+
       <div id="response" class="resp fade">Awaiting your whisper…</div>
 
       <div class="rowEnd">
@@ -117,186 +91,136 @@
       </div>
 
       <div class="foot">
-        <div class="badge">
-          <span>Meme Occult</span>
-          <span class="mono" id="ca">CA: 0x0000000000000000000000000000000000000000</span>
-        </div>
+        <div class="badge"><span>Meme Occult</span><span class="mono" id="ca">CA: 0x0000000000000000000000000000000000000000</span></div>
         <div>© <span id="year"></span> Meme Occult • The veil is thin.</div>
       </div>
     </div>
   </div>
 
   <script>
-    /* ---------------- SETTINGS ---------------- */
-    const CONTRACT_ADDRESS = "0x0000000000000000000000000000000000000000"; // update after token mint
+    /* ------------ SETTINGS (no API) ------------ */
+    const CONTRACT_ADDRESS = "0x0000000000000000000000000000000000000000";
+    const MODEL_ID = "google/flan-t5-small"; // küçük, güvenilir, hızlı indirilir
+    const TASK = "text2text-generation";
+
     const SHARE_TEMPLATES = [
       `The Oracle has spoken: “{quote}”\nMeme Occult is here. CA: {CA}\n\nWhisper your question, let the memes speak. #oracle`,
       `I asked The Oracle… and it answered: “{quote}”\nMeme Occult arrives. CA: {CA} — Dare to ask. #oracle`,
       `A whisper in the dark → “{quote}”\nThe Oracle answered. Meme Occult, CA: {CA}. Ask yours. #oracle`
     ];
 
-    /* ---------------- ELEMENTS ---------------- */
-    const $q = document.getElementById("q");
-    const $ask = document.getElementById("ask");
-    const $resp = document.getElementById("response");
-    const $share = document.getElementById("share");
-    const $reset = document.getElementById("reset");
-    const $ca = document.getElementById("ca");
-    const $year = document.getElementById("year");
-    $year.textContent = new Date().getFullYear();
-    $ca.textContent = `CA: ${CONTRACT_ADDRESS}`;
+    /* ------------ ELEMENTS ------------ */
+    const $q=document.getElementById("q"),$ask=document.getElementById("ask"),$resp=document.getElementById("response"),
+          $share=document.getElementById("share"),$reset=document.getElementById("reset"),
+          $ca=document.getElementById("ca"),$year=document.getElementById("year"),
+          $loader=document.getElementById("loader"),$bar=document.getElementById("bar"),$pct=document.getElementById("pct");
+    $year.textContent=new Date().getFullYear(); $ca.textContent=`CA: ${CONTRACT_ADDRESS}`;
 
-    let lastAnswer = "";
-    let localPipeline = null; // transformers.js pipeline (lazy)
-    let modelLoading = false;
+    let lastAnswer="", localPipeline=null, modelLoading=false;
 
-    /* ---------------- HELPERS ---------------- */
-    function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
-    async function typeInto(el, text, speed=14){
-      el.classList.add("typing");
-      el.textContent = "";
-      for (let i=0;i<text.length;i++){
-        el.textContent += text[i];
-        // small accelerations for smoother feel
-        await sleep(i<30 ? speed : i<180 ? Math.max(10, speed-2) : Math.max(8, speed-4));
-      }
-      el.classList.remove("typing");
-    }
-    function firstSentence(s){
-      if(!s) return "";
-      const cut = s.split(/(?<=[.!?])\s/)[0] || s;
-      return cut.trim().slice(0,140);
-    }
-    function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
-    function makeTweet(answer){
-      const quote = firstSentence(answer).replace(/\s+/g, " ");
-      const tmpl = pick(SHARE_TEMPLATES);
-      return tmpl.replace("{quote}", quote).replace("{CA}", CONTRACT_ADDRESS);
-    }
-    function openTwitterIntent(text){
-      const url = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text);
-      window.open(url, "_blank","noopener,noreferrer");
-    }
+    /* ------------ HELPERS ------------ */
+    const sleep=(ms)=>new Promise(r=>setTimeout(r,ms));
+    async function typeInto(el,t,s=14){el.classList.add("typing");el.textContent="";
+      for(let i=0;i<t.length;i++){el.textContent+=t[i];await sleep(i<30?s:i<180?Math.max(10,s-2):Math.max(8,s-4));}
+      el.classList.remove("typing");}
+    const firstSentence=(s)=>!s?"":(s.split(/(?<=[.!?])\s/)[0]||s).trim().slice(0,140);
+    const pick=(a)=>a[Math.floor(Math.random()*a.length)];
+    const makeTweet=(ans)=>pick(SHARE_TEMPLATES).replace("{quote}",firstSentence(ans).replace(/\s+/g," "))
+                                                .replace("{CA}",CONTRACT_ADDRESS);
+    const openTwitterIntent=(text)=>window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(text),"_blank","noopener,noreferrer");
 
-    /* ---------------- LOCAL LLM (FREE) ---------------- */
+    /* ------------ LOCAL MODEL LOADER (with progress) ------------ */
     async function ensureLocalModel(){
-      if (localPipeline) return localPipeline;
-      if (modelLoading) { // prevent double loads
-        while (!localPipeline) { await sleep(300); }
-        return localPipeline;
+      if(localPipeline) return localPipeline;
+      if(modelLoading){ while(!localPipeline) await sleep(300); return localPipeline; }
+      modelLoading=true;
+
+      // Transformers hazır olana kadar bekle
+      if (window.transformers && typeof window.transformers.ready === "function") {
+        await window.transformers.ready();
       }
-      modelLoading = true;
-      const { pipeline } = window.transformers;
-      // This downloads once into browser cache (50–100MB). First run slower.
-      localPipeline = await pipeline("text2text-generation", "Xenova/LaMini-Flan-T5-248M");
-      modelLoading = false;
+
+      // Progress callback
+      window.transformers.setProgressHandler?.((data)=>{
+        if(!data||!data.progress) return;
+        $loader.style.display="flex";
+        const p = Math.round(data.progress*100);
+        $bar.style.width = p+"%";
+        $pct.textContent = p+"%";
+        if(p>=100) setTimeout(()=>{ $loader.style.display="none"; }, 600);
+      });
+
+      const { pipeline, env } = window.transformers;
+      env.allowLocalModels = false;      // uzak (HF) modelleri indir
+      env.allowRemoteModels = true;      // indirmeye izin ver
+      env.backends.onnx.wasm.numThreads = 1; // tarayıcı uyumluluğu
+
+      // Daha küçük, güvenilir model
+      localPipeline = await pipeline(TASK, MODEL_ID);
+      modelLoading=false;
       return localPipeline;
     }
 
     function buildOraclePrompt(q){
-      return `You are The Oracle: a mystical, concise voice.
-- Answer in English, 2–5 short paragraphs, vivid but readable, no emojis.
-- Always end with a single line starting "Omen:".
+      return `You are The Oracle: a mystical yet concise voice.
+- Answer in English as 2–5 short paragraphs. No emojis.
+- End with a single line starting with "Omen:".
 Question: ${q}
 Answer:`;
     }
 
     async function askOracle(){
-      const question = ($q.value || "").trim();
+      const question = ($q.value||"").trim();
       if(!question){ $q.focus(); return; }
 
-      $ask.disabled = true; $share.disabled = true; $reset.disabled = true;
+      $ask.disabled=true; $share.disabled=true; $reset.disabled=true;
       $resp.classList.remove("fade");
-      await typeInto($resp, "Listening beyond the veil…");
+      await typeInto($resp,"Listening beyond the veil…");
 
       try{
         const pipe = await ensureLocalModel();
         const prompt = buildOraclePrompt(question);
-        const out = await pipe(prompt, {
-          max_new_tokens: 180,
-          temperature: 0.9,
-          top_p: 0.95,
-          repetition_penalty: 1.08
-        });
-        lastAnswer = (out?.[0]?.generated_text || "").trim();
-        if (!lastAnswer) throw new Error("Empty answer");
-        await typeInto($resp, lastAnswer, 12);
-        $share.disabled = false; $reset.disabled = false;
+        const out = await pipe(prompt,{max_new_tokens:140,temperature:0.9,top_p:0.95,repetition_penalty:1.08});
+        lastAnswer = (out?.[0]?.generated_text||"").trim();
+        if(!lastAnswer) throw new Error("Empty answer");
+        await typeInto($resp,lastAnswer,12);
+        $share.disabled=false; $reset.disabled=false;
       }catch(err){
-        console.error(err);
-        await typeInto($resp, "The veil resisted your whisper. (Local model error)");
+        console.error("Local model error:", err);
+        await typeInto($resp,"The veil resisted your whisper. (Local model error)");
       }finally{
-        $ask.disabled = false;
+        $ask.disabled=false;
       }
     }
 
     function resetOracle(){
-      lastAnswer = "";
-      $resp.classList.add("fade");
-      $resp.textContent = "Awaiting your whisper…";
-      $q.value = "";
-      $share.disabled = true;
-      $reset.disabled = true;
-      $q.focus();
+      lastAnswer=""; $resp.classList.add("fade"); $resp.textContent="Awaiting your whisper…";
+      $q.value=""; $share.disabled=true; $reset.disabled=true; $q.focus();
     }
 
-    /* ---------------- SIGIL (canvas ring) ---------------- */
+    /* ------------ SIGIL (canvas ring) ------------ */
     (function sigil(){
-      const c = document.getElementById('sigil');
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      function resize(){
-        const rect = c.getBoundingClientRect();
-        c.width = Math.floor(rect.width * dpr);
-        c.height = Math.floor(rect.height * dpr);
-      }
-      resize();
-      const ctx = c.getContext('2d');
-      let t=0;
-      function draw(){
-        const {width:w,height:h}=c; ctx.clearRect(0,0,w,h);
-        const cx=w/2, cy=h/2, R=Math.min(w,h)*0.38;
-        // halo
-        const g=ctx.createRadialGradient(cx,cy,0,cx,cy,R*1.2);
-        g.addColorStop(0,"rgba(255,215,132,.20)");
-        g.addColorStop(1,"rgba(63,0,106,.00)");
+      const c=document.getElementById('sigil'); const dpr=Math.min(window.devicePixelRatio||1,2);
+      function resize(){const r=c.getBoundingClientRect(); c.width=Math.floor(r.width*dpr); c.height=Math.floor(r.height*dpr);}
+      resize(); const ctx=c.getContext('2d'); let t=0;
+      function draw(){const w=c.width,h=c.height; ctx.clearRect(0,0,w,h); const cx=w/2,cy=h/2,R=Math.min(w,h)*0.38;
+        const g=ctx.createRadialGradient(cx,cy,0,cx,cy,R*1.2); g.addColorStop(0,"rgba(255,215,132,.20)"); g.addColorStop(1,"rgba(63,0,106,.00)");
         ctx.fillStyle=g; ctx.beginPath(); ctx.arc(cx,cy,R*1.2,0,Math.PI*2); ctx.fill();
-
-        // ring dots
-        const N=56;
-        for(let i=0;i<N;i++){
-          const a = (i/N)*Math.PI*2 + t*0.0025*(i%2?1:-1);
-          const r = R + Math.sin(t*0.02 + i)*2.2;
-          const x = cx + Math.cos(a)*r;
-          const y = cy + Math.sin(a)*r;
-          const s = 1.2 + 0.8*Math.sin(t*0.03 + i);
-          ctx.fillStyle="rgba(255,215,132,.75)";
-          ctx.beginPath(); ctx.arc(x,y,s,0,Math.PI*2); ctx.fill();
-        }
-        // inner rune
-        ctx.strokeStyle="rgba(255,215,132,.55)";
-        ctx.lineWidth=1.2*dpr;
-        ctx.beginPath();
-        for(let k=0;k<5;k++){
-          const a = t*0.01 + k*(Math.PI*2/5);
-          const x = cx + Math.cos(a)*(R*0.52);
-          const y = cy + Math.sin(a)*(R*0.52);
-          if(k===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-        }
-        ctx.closePath(); ctx.stroke();
-
-        t++;
-        requestAnimationFrame(draw);
-      }
-      window.addEventListener('resize', ()=>{resize();});
-      draw();
+        const N=56; for(let i=0;i<N;i++){const a=(i/N)*Math.PI*2 + t*0.0025*(i%2?1:-1); const r=R + Math.sin(t*0.02 + i)*2.2;
+          const x=cx+Math.cos(a)*r; const y=cy+Math.sin(a)*r; const s=1.2+0.8*Math.sin(t*0.03 + i);
+          ctx.fillStyle="rgba(255,215,132,.75)"; ctx.beginPath(); ctx.arc(x,y,s,0,Math.PI*2); ctx.fill();}
+        ctx.strokeStyle="rgba(255,215,132,.55)"; ctx.lineWidth=1.2*dpr; ctx.beginPath();
+        for(let k=0;k<5;k++){const a=t*0.01 + k*(Math.PI*2/5); const x=cx+Math.cos(a)*(R*0.52); const y=cy+Math.sin(a)*(R*0.52);
+          if(k===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);} ctx.closePath(); ctx.stroke(); t++; requestAnimationFrame(draw);}
+      window.addEventListener('resize',()=>resize()); draw();
     })();
 
-    /* ---------------- BINDINGS ---------------- */
-    $ask.addEventListener("click", askOracle);
-    $q.addEventListener("keydown", (e)=>{ if(e.key==="Enter") askOracle(); });
-    $share.addEventListener("click", ()=> openTwitterIntent(makeTweet(lastAnswer)));
-    $reset.addEventListener("click", resetOracle);
-    window.addEventListener("load", ()=> $q.focus());
+    /* ------------ BINDINGS ------------ */
+    document.getElementById("ask").addEventListener("click", askOracle);
+    document.getElementById("q").addEventListener("keydown",(e)=>{ if(e.key==="Enter") askOracle(); });
+    document.getElementById("share").addEventListener("click",()=>openTwitterIntent(makeTweet(lastAnswer)));
+    document.getElementById("reset").addEventListener("click", resetOracle);
+    window.addEventListener("load",()=>document.getElementById("q").focus());
   </script>
 </body>
 </html>
